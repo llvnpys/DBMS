@@ -1,24 +1,35 @@
 package calendar;
 
-import calendar.controller.LoginController;
-import calendar.controller.SignUpController;
-import calendar.service.MemberService;
-import calendar.view.LoginView;
-
-import java.sql.Connection;
-import java.sql.DriverManager;
+import calendar.controller.*;
+import calendar.view.*;
 
 public class CalendarApp {
     public static void main(String[] args) {
-        // 데이터베이스 연결 설정
         try {
-            Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/app_calendar", "na", "1234");
+            ViewManager viewManager = new ViewManager();
 
-            MemberService memberService = new MemberService(connection);
-            LoginController loginController = new LoginController(memberService);
-            SignUpController signUpController = new SignUpController();
-            new LoginView(loginController, signUpController); // 로그인 화면 띄우기
+            // 뷰 생성 및 등록
+            LoginView loginView = new LoginView();
+            SignUpView signUpView = new SignUpView();
+            CalendarView calendarView = new CalendarView();
 
+            viewManager.registerView(ViewEnum.LOGIN_VIEW, loginView.getFrame());
+            viewManager.registerView(ViewEnum.SIGNUP_VIEW, signUpView.getFrame());
+            viewManager.registerView(ViewEnum.CALENDAR_VIEW, calendarView.getFrame());
+
+            // 컨트롤러 생성
+            LoginController loginController = new LoginControllerImpl();
+            SignUpController signUpController = new SignUpControllerImpl();
+            CalendarController calendarController = new CalendarControllerImpl();
+
+            // MainController 생성 (리스너도 여기서 설정)
+            MainControllerImpl mainController = new MainControllerImpl(viewManager, loginController, signUpController, calendarController);
+
+            // 뷰에 리스너를 MainController에서 설정
+            mainController.setListeners(loginView, signUpView, calendarView);
+
+            // 애플리케이션 시작
+            mainController.start();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,23 +1,23 @@
 package calendar.model;
 
 public class Member {
-    private String id;
+    private Long id;
     private String password;
     private String name;
 
     public Member() {}
 
-    public Member(String id, String password, String name) {
+    public Member(Long id, String password, String name) {
         this.id = id;
         this.password = password;
         this.name = name;
     }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

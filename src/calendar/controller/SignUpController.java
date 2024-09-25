@@ -1,9 +1,6 @@
 package calendar.controller;
 
-import calendar.view.SignUpView;
-
-public class SignUpController {
-    public void showSignUpView() {
-        new SignUpView(this).createSignUpView();
-    }
+public interface SignUpController {
+    // 회원가입 처리
+    boolean signUp(String userId, String password, String name);
 }

@@ -1,54 +1,59 @@
 package calendar.view;
 
-import calendar.controller.LoginController;
-import calendar.controller.SignUpController;
-
 import javax.swing.*;
 import java.awt.*;
-public class LoginView {
-    private LoginController loginController;
-    private SignUpController signUpController;
+import java.awt.event.ActionListener;
 
-    public LoginView(LoginController loginController, SignUpController signUpController) {
-        this.loginController = loginController;
-        this.signUpController = signUpController;
+public class LoginView {
+    private JFrame frame;
+    private JTextField userIdField;
+    private JPasswordField passwordField;
+    private JButton loginButton;
+    private JButton signUpButton;
+
+    public LoginView() {
         createLoginView();
     }
 
-
     public void createLoginView() {
-        JFrame frame = new JFrame("Login");
-        JPanel panel = new JPanel(new GridLayout(4, 2));
+        frame = new JFrame("Login");
+        JPanel panel = new JPanel(new GridLayout(3, 2));
 
-        // 사용자 입력 필드
-        JTextField idField = new JTextField();
-        JPasswordField passwordField = new JPasswordField();
-        JButton loginButton = new JButton("Login");
-        JButton signUpButton = new JButton("Sign Up");
+        userIdField = new JTextField();
+        passwordField = new JPasswordField();
+        loginButton = new JButton("Login");
+        signUpButton = new JButton("Sign Up");
 
         panel.add(new JLabel("User ID:"));
-        panel.add(idField);
+        panel.add(userIdField);
         panel.add(new JLabel("Password:"));
         panel.add(passwordField);
         panel.add(loginButton);
         panel.add(signUpButton);
 
         frame.add(panel);
-        frame.setSize(400, 200); // 프레임 크기 설정
-        frame.setLocationRelativeTo(null); // 화면 중앙에 위치
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // 종료 설정
-        frame.setVisible(true);
+        frame.setSize(300, 150);
+        frame.setLocationRelativeTo(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
 
-        // 로그인 버튼 액션
-        loginButton.addActionListener(e -> {
-            String userId = idField.getText();
-            String password = new String(passwordField.getPassword());
-            loginController.handleLogin(userId, password);
-        });
+    public JFrame getFrame() {
+        return frame;
+    }
 
-        // 회원가입 버튼 액션
-        signUpButton.addActionListener(e -> {
-            signUpController.showSignUpView(); // 회원가입 화면으로 이동
-        });
+    public String getUserId() {
+        return userIdField.getText();
+    }
+
+    public String getPassword() {
+        return new String(passwordField.getPassword());
+    }
+
+    public void setLoginButtonListener(ActionListener listener) {
+        loginButton.addActionListener(listener);
+    }
+
+    public void setSignUpButtonListener(ActionListener listener) {
+        signUpButton.addActionListener(listener);
     }
 }
